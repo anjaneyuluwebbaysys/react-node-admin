@@ -57,6 +57,21 @@ router.post("/upload/user_kyc", uploadStorage.fields([
     });
 });
 
+
+const { 
+    addAdmin,
+    fetchAdmin,
+    fetchOneAdmin,
+    updateAdmin,
+    deleteAdmin
+} = require("./AdminController");
+
+router.post('/addadmin',addAdmin);
+router.get('/getadmin',fetchAdmin);
+router.get('/admin',fetchOneAdmin);
+router.post('/updateadmin',updateAdmin);
+router.post('/deleteadmin',deleteAdmin);
+
 router.use('*', (req, res) =>
     res.status(httpStatus.NOT_IMPLEMENTED).json({
         success: 0,
