@@ -1,0 +1,14 @@
+{
+	"script": "./index.js",
+	"ignore": [".git", "public/*"],
+	"verbose": true,
+	"watch": ["service/**","controller/**","models/**"],
+	"execMap": {
+    	"js": "node --harmony"
+  	},
+	 "env": {
+        "NODE_ENV": "development"
+      },
+      "ext": "js,json"
+}
+
