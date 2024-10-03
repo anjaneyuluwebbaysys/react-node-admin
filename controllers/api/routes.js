@@ -66,11 +66,17 @@ const {
     deleteAdmin
 } = require("./AdminController");
 
+const { 
+    addAdminMenu
+} = require("./AdminMenuController");
+
+
 router.post('/addadmin',addAdmin);
 router.get('/getadmin',fetchAdmin);
 router.get('/admin',fetchOneAdmin);
 router.post('/updateadmin',updateAdmin);
 router.post('/deleteadmin',deleteAdmin);
+router.post('/addmenu',addAdminMenu);
 
 router.use('*', (req, res) =>
     res.status(httpStatus.NOT_IMPLEMENTED).json({

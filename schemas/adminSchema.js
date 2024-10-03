@@ -25,6 +25,23 @@ const AdminSchema = new Schema({
 
 const Admin = mongoose.model('Admin', AdminSchema);
 
+
+const AdminMenuSchema = new Schema({
+    id: { 
+        type: Schema.Types.ObjectId, 
+        auto: true, 
+        required: true 
+    },
+    parent_id: { type: String, default: null },
+    menu_display: { type: String, default: null },
+    menu_url: { type: String, default: null },
+    order_by: { type: String, default: null },
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' }
+});
+
+const AdminMenu = mongoose.model("AdminMenu",AdminMenuSchema);
+
 module.exports = {
-    Admin
+    Admin,
+    AdminMenu
 };
