@@ -41,7 +41,22 @@ const AdminMenuSchema = new Schema({
 
 const AdminMenu = mongoose.model("AdminMenu",AdminMenuSchema);
 
+const GroupSchema = new Schema({
+    id: { 
+        type: Schema.Types.ObjectId, 
+        auto: true, 
+        required: true 
+    },
+    name: { type: String, default: null },
+    code: { type: String, default: null },
+    sequence: { type: String, default: null },
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' }
+});
+
+const Groups = mongoose.model("Groups",GroupSchema);
+
 module.exports = {
     Admin,
-    AdminMenu
+    AdminMenu,
+    Groups
 };

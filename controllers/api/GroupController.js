@@ -3,19 +3,19 @@ const _ = require('underscore');
 const Joi = require('joi');
 const CustomError = require("../../errors/index")
 
-const { Admin } = require("../../schemas/adminSchema"); 
+const { Groups } = require("../../schemas/adminSchema"); 
 
-const fetchAdmin = async (req, res) => {
+const fetchGroup = async (req, res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const AdminData = await Admin.find();
+        const GroupData = await Groups.find();
         
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': AdminData
+            'data': GroupData
         } 
     } catch (err) {
         blockResult.success = 0;
@@ -26,38 +26,27 @@ const fetchAdmin = async (req, res) => {
     return outputResponse;
 }
 
-const addAdmin = async (req ,res) => {
+const addGroup = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const { name,username,password,email,group_id,image,verification_code,status } = req.body;
+        const { name,status,sequence,code } = req.body;
 
         if (name == '') {
             throw new CustomError.BadRequestError('Please enter name');
         }
-        if (username == '') {
-            throw new CustomError.BadRequestError('Please enter username');
+        if (code == '') {
+            throw new CustomError.BadRequestError('Please enter code');
         }
-        if (email == '') {
-            throw new CustomError.BadRequestError('Please enter email');
+        if (sequence == '') {
+            throw new CustomError.BadRequestError('Please enter sequence');
         }
-        if (password == '') {
-            throw new CustomError.BadRequestError('Please enter password');
-        }
-        if (group_id == '') {
-            throw new CustomError.BadRequestError('Please enter group_id');
-        }
-        await Admin.create({
+
+        await Groups.create({
             name:name,
-            username:username,
-            email:email,
-            password:password,
-            group_id:group_id,
-            image:image,
-            verification_code:verification_code,
-            create_at:new Date(),
-            updated_at: new Date(),
+            code:code,
+            sequence:sequence,
             status:status
         });
 
@@ -78,7 +67,7 @@ const addAdmin = async (req ,res) => {
     return outputResponse;
 };
 
-const fetchOneAdmin = async (req ,res) => {
+const fetchOneGroup = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
@@ -88,14 +77,14 @@ const fetchOneAdmin = async (req ,res) => {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
 
-        const adminData = await Admin.findOne({ id });
-        if(!adminData) {
+        const groupData = await Groups.findOne({ id });
+        if(!groupData) {
             throw new CustomError.BadRequestError("Admin data not found.");
         }
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': adminData
+            'data': groupData
         } 
         
     } catch (err) {
@@ -108,55 +97,49 @@ const fetchOneAdmin = async (req ,res) => {
     return outputResponse;
 };
 
-const updateAdmin = async (req ,res) => {
+const updateGroup = async (req ,res) => {
     
     let blockResult = {};
     let outputResponse = {};
 
     try {
 
-        const { id,name,username,email,password,group_id,status} = req.body;        
+        const { id,name,status,sequence,code} = req.body;        
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
         if (name == '') {
             throw new CustomError.BadRequestError('Please enter name');
         }
-        if (username == '') {
-            throw new CustomError.BadRequestError('Please enter username');
+        if (code == '') {
+            throw new CustomError.BadRequestError('Please enter code');
         }
-        if (email == '') {
-            throw new CustomError.BadRequestError('Please enter email');
-        }
-        if (group_id == '') {
-            throw new CustomError.BadRequestError('Please enter group_id');
+        if (sequence == '') {
+            throw new CustomError.BadRequestError('Please enter sequence');
         }
         const updateData = {
             name:name,
-            username:username,
-            email:email,
-            password:password,
-            group_id:group_id,
-            updated_at: new Date(),
+            code:code,
+            sequence:sequence,
             status:status
         };
-        const updatedAdmin = await Admin.findOneAndUpdate({ id }, updateData, {
+        const updatedGroup = await Groups.findOneAndUpdate({ id }, updateData, {
             new: true,
             runValidators: true,
         });
-        if(!updatedAdmin) {
+        if(!updatedGroup) {
             throw new CustomError.BadRequestError("Admin data not found.");
         }
 
-        const adminData = await Admin.findOne({ id });
-        if(!adminData) {
+        const groupData = await Groups.findOne({ id });
+        if(!groupData) {
             throw new CustomError.BadRequestError("Admin data not found.");
         }
 
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': adminData
+            'data': groupData
         } 
 
     } catch (err) {
@@ -169,7 +152,7 @@ const updateAdmin = async (req ,res) => {
     return outputResponse;
 }
 
-const deleteAdmin = async (req, res) => {
+const deleteGroup = async (req, res) => {
 
     let blockResult = {};
     let outputResponse = {};
@@ -179,8 +162,8 @@ const deleteAdmin = async (req, res) => {
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
-        const deletedAdmin = await Admin.findOneAndDelete( { id }); 
-        if(!deletedAdmin) {
+        const deletedGroup = await Groups.findOneAndDelete( { id }); 
+        if(!deletedGroup) {
             throw new CustomError.BadRequestError("Admin not found.");
         }
         blockResult = {
@@ -200,9 +183,9 @@ const deleteAdmin = async (req, res) => {
 }
 
 module.exports = {
-    addAdmin,
-    fetchAdmin,
-    fetchOneAdmin,
-    updateAdmin,
-    deleteAdmin
+    addGroup,
+    fetchGroup,
+    fetchOneGroup,
+    updateGroup,
+    deleteGroup
 };

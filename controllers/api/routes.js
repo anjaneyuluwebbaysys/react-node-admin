@@ -67,8 +67,20 @@ const {
 } = require("./AdminController");
 
 const { 
-    addAdminMenu
+    addAdminMenu,
+    fetchAdminMenu,
+    fetchOneAdminMenu,
+    updateAdminMenu,
+    deleteAdminMenu
 } = require("./AdminMenuController");
+
+const {
+    addGroup,
+    fetchGroup,
+    fetchOneGroup,
+    updateGroup,
+    deleteGroup 
+} = require("./GroupController");
 
 
 router.post('/addadmin',addAdmin);
@@ -77,6 +89,15 @@ router.get('/admin',fetchOneAdmin);
 router.post('/updateadmin',updateAdmin);
 router.post('/deleteadmin',deleteAdmin);
 router.post('/addmenu',addAdminMenu);
+router.get("/getmenus",fetchAdminMenu);
+router.get("/menu",fetchOneAdminMenu);
+router.post("/updatemenu",updateAdminMenu);
+router.post('/deletemenu',deleteAdminMenu);
+router.post('/addgroup',addGroup);
+router.get("/getgroups",fetchGroup);
+router.get("/group",fetchOneGroup);
+router.post("/updategroup",updateGroup);
+router.post('/deletegroup',deleteGroup);
 
 router.use('*', (req, res) =>
     res.status(httpStatus.NOT_IMPLEMENTED).json({
