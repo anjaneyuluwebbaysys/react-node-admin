@@ -82,6 +82,37 @@ const {
     deleteGroup 
 } = require("./GroupController");
 
+const { 
+    addCMS,
+    fetchCMS,
+    fetchOneCMS,
+    updateCMS,
+    deleteCMS
+} = require("./CMSController");
+
+const {
+    addSetting,
+    fetchSetting,
+    fetchOneSetting,
+    updateSetting,
+    deleteSetting
+} = require("./SettingController");
+
+const { 
+    addMedia,
+    fetchMedia,
+    fetchOneMedia,
+    updateMedia,
+    deleteMedia
+} = require("./SocialMediaController");
+
+const {
+    addUser,
+    fetchUser,
+    fetchOneUser,
+    updateUser,
+    deleteUser
+} = require("./UserController");
 
 router.post('/addadmin',addAdmin);
 router.get('/getadmin',fetchAdmin);
@@ -98,6 +129,26 @@ router.get("/getgroups",fetchGroup);
 router.get("/group",fetchOneGroup);
 router.post("/updategroup",updateGroup);
 router.post('/deletegroup',deleteGroup);
+router.post('/addcms',addCMS);
+router.get("/getcms",fetchCMS);
+router.get("/cms",fetchOneCMS);
+router.post("/updatecms",updateCMS);
+router.post('/deletecms',deleteCMS);
+router.post('/addsetting',addSetting);
+router.get("/getsetting",fetchSetting);
+router.get("/setting",fetchOneSetting);
+router.post("/updatesetting",updateSetting);
+router.post('/deletesetting',deleteSetting);
+router.post('/addmedia',addMedia);
+router.get("/getmedia",fetchMedia);
+router.get("/media",fetchOneMedia);
+router.post("/updatemedia",updateMedia);
+router.post('/deletemedia',deleteMedia);
+router.post('/adduser',addUser);
+router.get("/getusers",fetchUser);
+router.get("/user",fetchOneUser);
+router.post("/updateuser",updateUser);
+router.post('/deleteuser',deleteUser);
 
 router.use('*', (req, res) =>
     res.status(httpStatus.NOT_IMPLEMENTED).json({

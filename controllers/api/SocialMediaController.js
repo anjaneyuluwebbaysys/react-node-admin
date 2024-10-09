@@ -3,19 +3,19 @@ const _ = require('underscore');
 const Joi = require('joi');
 const CustomError = require("../../errors/index")
 
-const { Groups } = require("../../schemas/adminSchema"); 
+const { SocialMedia } = require("../../schemas/adminSchema"); 
 
-const fetchGroup = async (req, res) => {
+const fetchMedia = async (req, res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const GroupData = await Groups.find();
+        const mediaData = await SocialMedia.find();
         
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': GroupData
+            'data': mediaData
         } 
     } catch (err) {
         blockResult.success = 0;
@@ -26,28 +26,21 @@ const fetchGroup = async (req, res) => {
     return outputResponse;
 }
 
-const addGroup = async (req ,res) => {
+const addMedia = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const { name,status,sequence,code } = req.body;
+        const { facebook,twitter,google,youtube,linkedin,instagram,pinterest } = req.body;
 
-        if (name == '') {
-            throw new CustomError.BadRequestError('Please enter name');
-        }
-        if (code == '') {
-            throw new CustomError.BadRequestError('Please enter code');
-        }
-        if (sequence == '') {
-            throw new CustomError.BadRequestError('Please enter sequence');
-        }
-
-        await Groups.create({
-            name:name,
-            code:code,
-            sequence:sequence,
-            status:status
+        await SocialMedia.create({
+            facebook:facebook,
+            twitter:twitter,
+            google:google,
+            youtube:youtube,
+            linkedin:linkedin,
+            instagram:instagram,
+            pinterest:pinterest
         });
 
         blockResult = {
@@ -67,7 +60,7 @@ const addGroup = async (req ,res) => {
     return outputResponse;
 };
 
-const fetchOneGroup = async (req ,res) => {
+const fetchOneMedia = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
@@ -77,14 +70,14 @@ const fetchOneGroup = async (req ,res) => {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
 
-        const groupData = await Groups.findOne({ id });
-        if(!groupData) {
-            throw new CustomError.BadRequestError("Admin data not found.");
+        const mediaData = await SocialMedia.findOne({ id });
+        if(!mediaData) {
+            throw new CustomError.BadRequestError("Soical Media data not found.");
         }
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': groupData
+            'data': mediaData
         } 
         
     } catch (err) {
@@ -97,49 +90,44 @@ const fetchOneGroup = async (req ,res) => {
     return outputResponse;
 };
 
-const updateGroup = async (req ,res) => {
+const updateMedia = async (req ,res) => {
     
     let blockResult = {};
     let outputResponse = {};
 
     try {
 
-        const { id,name,status,sequence,code} = req.body;        
+        const { id,facebook,twitter,google,youtube,linkedin,instagram,pinterest } = req.body;        
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
-        if (name == '') {
-            throw new CustomError.BadRequestError('Please enter name');
-        }
-        if (code == '') {
-            throw new CustomError.BadRequestError('Please enter code');
-        }
-        if (sequence == '') {
-            throw new CustomError.BadRequestError('Please enter sequence');
-        }
+        
         const updateData = {
-            name:name,
-            code:code,
-            sequence:sequence,
-            status:status
+            facebook:facebook,
+            twitter:twitter,
+            google:google,
+            youtube:youtube,
+            linkedin:linkedin,
+            instagram:instagram,
+            pinterest:pinterest
         };
-        const updatedGroup = await Groups.findOneAndUpdate({ id }, updateData, {
+        const updatedMedia = await SocialMedia.findOneAndUpdate({ id }, updateData, {
             new: true,
             runValidators: true,
         });
-        if(!updatedGroup) {
-            throw new CustomError.BadRequestError("Group data not found.");
+        if(!updatedMedia) {
+            throw new CustomError.BadRequestError("Media data not found.");
         }
 
-        const groupData = await Groups.findOne({ id });
-        if(!groupData) {
-            throw new CustomError.BadRequestError("Group data not found.");
+        const mediaData = await SocialMedia.findOne({ id });
+        if(!mediaData) {
+            throw new CustomError.BadRequestError("Media data not found.");
         }
 
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': groupData
+            'data': mediaData
         } 
 
     } catch (err) {
@@ -152,7 +140,7 @@ const updateGroup = async (req ,res) => {
     return outputResponse;
 }
 
-const deleteGroup = async (req, res) => {
+const deleteMedia = async (req, res) => {
 
     let blockResult = {};
     let outputResponse = {};
@@ -162,9 +150,9 @@ const deleteGroup = async (req, res) => {
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
-        const deletedGroup = await Groups.findOneAndDelete( { id }); 
-        if(!deletedGroup) {
-            throw new CustomError.BadRequestError("Group not found.");
+        const deletedMedia = await SocialMedia.findOneAndDelete( { id }); 
+        if(!deletedMedia) {
+            throw new CustomError.BadRequestError("Media not found.");
         }
         blockResult = {
             'success':1,
@@ -183,9 +171,9 @@ const deleteGroup = async (req, res) => {
 }
 
 module.exports = {
-    addGroup,
-    fetchGroup,
-    fetchOneGroup,
-    updateGroup,
-    deleteGroup
+    addMedia,
+    fetchMedia,
+    fetchOneMedia,
+    updateMedia,
+    deleteMedia
 };

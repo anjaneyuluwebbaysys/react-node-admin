@@ -40,17 +40,13 @@ const UserSchema = new Schema({
     referral_code: { type: String, default: null },
     referee_code: { type: String, default: null },
     firebase_token: { type: String, default: null },
-    bike_user_type: { type: String, default: null },
-    balance_amount: { type: String, default: '0' },
-    spoton_points: { type: String, default: null },
-    online_chat_status: { type: String, enum: ['Yes', 'No'], default: 'No' },
     user_verified: { type: String, enum: ['Yes', 'No'], default: 'No' },
-    status: { type: String, enum: ['Active', 'Inactive', 'Pending', 'Rejected'], default: 'Active' }
+    status: { type: String, enum: ['active', 'inactive', 'pending', 'rejected'], default: 'active' }
 });
 
 // Create the model
-const User = mongoose.model('User', UserSchema);
+const Users = mongoose.model('Users', UserSchema);
 
 module.exports = {
-    User
+    Users
 };

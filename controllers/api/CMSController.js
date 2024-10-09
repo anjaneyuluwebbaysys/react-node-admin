@@ -3,19 +3,19 @@ const _ = require('underscore');
 const Joi = require('joi');
 const CustomError = require("../../errors/index")
 
-const { Groups } = require("../../schemas/adminSchema"); 
+const { Cms } = require("../../schemas/adminSchema"); 
 
-const fetchGroup = async (req, res) => {
+const fetchCMS = async (req, res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const GroupData = await Groups.find();
+        const CmsData = await Cms.find();
         
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': GroupData
+            'data': CmsData
         } 
     } catch (err) {
         blockResult.success = 0;
@@ -26,27 +26,29 @@ const fetchGroup = async (req, res) => {
     return outputResponse;
 }
 
-const addGroup = async (req ,res) => {
+const addCMS = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
     try {
-        const { name,status,sequence,code } = req.body;
+        const { name,description,url,meta_keywords,meta_description,status } = req.body;
 
         if (name == '') {
             throw new CustomError.BadRequestError('Please enter name');
         }
-        if (code == '') {
-            throw new CustomError.BadRequestError('Please enter code');
+        if (description == '') {
+            throw new CustomError.BadRequestError('Please enter description');
         }
-        if (sequence == '') {
-            throw new CustomError.BadRequestError('Please enter sequence');
+        if (status == '') {
+            throw new CustomError.BadRequestError('Please enter status');
         }
 
-        await Groups.create({
+        await Cms.create({
             name:name,
-            code:code,
-            sequence:sequence,
+            description:description,
+            url:url,
+            meta_keywords:meta_keywords,
+            meta_description:meta_description,
             status:status
         });
 
@@ -67,7 +69,7 @@ const addGroup = async (req ,res) => {
     return outputResponse;
 };
 
-const fetchOneGroup = async (req ,res) => {
+const fetchOneCMS = async (req ,res) => {
     let blockResult = {};
     let outputResponse = {};
 
@@ -77,14 +79,14 @@ const fetchOneGroup = async (req ,res) => {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
 
-        const groupData = await Groups.findOne({ id });
-        if(!groupData) {
-            throw new CustomError.BadRequestError("Admin data not found.");
+        const CMSData = await Cms.findOne({ id });
+        if(!CMSData) {
+            throw new CustomError.BadRequestError("CMS data not found.");
         }
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': groupData
+            'data': CMSData
         } 
         
     } catch (err) {
@@ -97,49 +99,51 @@ const fetchOneGroup = async (req ,res) => {
     return outputResponse;
 };
 
-const updateGroup = async (req ,res) => {
+const updateCMS = async (req ,res) => {
     
     let blockResult = {};
     let outputResponse = {};
 
     try {
 
-        const { id,name,status,sequence,code} = req.body;        
+        const { id,name,description,url,meta_keywords,meta_description,status} = req.body;        
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
         if (name == '') {
             throw new CustomError.BadRequestError('Please enter name');
         }
-        if (code == '') {
-            throw new CustomError.BadRequestError('Please enter code');
+        if (description == '') {
+            throw new CustomError.BadRequestError('Please enter description');
         }
-        if (sequence == '') {
-            throw new CustomError.BadRequestError('Please enter sequence');
+        if (status == '') {
+            throw new CustomError.BadRequestError('Please enter status');
         }
         const updateData = {
             name:name,
-            code:code,
-            sequence:sequence,
+            description:description,
+            url:url,
+            meta_keywords:meta_keywords,
+            meta_description:meta_description,
             status:status
         };
-        const updatedGroup = await Groups.findOneAndUpdate({ id }, updateData, {
+        const updatedCMS = await Cms.findOneAndUpdate({ id }, updateData, {
             new: true,
             runValidators: true,
         });
-        if(!updatedGroup) {
-            throw new CustomError.BadRequestError("Group data not found.");
+        if(!updatedCMS) {
+            throw new CustomError.BadRequestError("CMS data not found.");
         }
 
-        const groupData = await Groups.findOne({ id });
-        if(!groupData) {
-            throw new CustomError.BadRequestError("Group data not found.");
+        const CMSData = await Cms.findOne({ id });
+        if(!CMSData) {
+            throw new CustomError.BadRequestError("CMS data not found.");
         }
 
         blockResult = {
             'success':1,
             'message':"Data",
-            'data': groupData
+            'data': CMSData
         } 
 
     } catch (err) {
@@ -152,7 +156,7 @@ const updateGroup = async (req ,res) => {
     return outputResponse;
 }
 
-const deleteGroup = async (req, res) => {
+const deleteCMS = async (req, res) => {
 
     let blockResult = {};
     let outputResponse = {};
@@ -162,9 +166,9 @@ const deleteGroup = async (req, res) => {
         if(id == '') {
             throw new CustomError.BadRequestError("Please enter id missing");
         }
-        const deletedGroup = await Groups.findOneAndDelete( { id }); 
-        if(!deletedGroup) {
-            throw new CustomError.BadRequestError("Group not found.");
+        const deletedCMS = await Cms.findOneAndDelete( { id }); 
+        if(!deletedCMS) {
+            throw new CustomError.BadRequestError("CMS not found.");
         }
         blockResult = {
             'success':1,
@@ -183,9 +187,9 @@ const deleteGroup = async (req, res) => {
 }
 
 module.exports = {
-    addGroup,
-    fetchGroup,
-    fetchOneGroup,
-    updateGroup,
-    deleteGroup
+    addCMS,
+    fetchCMS,
+    fetchOneCMS,
+    updateCMS,
+    deleteCMS
 };
