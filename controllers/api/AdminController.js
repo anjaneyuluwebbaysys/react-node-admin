@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const _ = require('underscore');
 const Joi = require('joi');
 const CustomError = require("../../errors/index")
+const bcrypt = require('bcrypt');
 
 const { Admin } = require("../../schemas/adminSchema"); 
 
@@ -198,11 +199,48 @@ const deleteAdmin = async (req, res) => {
     outputResponse = res.json(blockResult);
     return outputResponse;
 }
+const AdminLogin = async (req ,res) => {
+    let blockResult = {};
+    let outputResponse = {};
+
+    try {
+        const { username,password } = req.body;
+        if(username == '') {
+            throw new CustomError.BadRequestError("Please enter username");
+        }
+        if(password == '') {
+            throw new CustomError.BadRequestError("Please enter password");
+        }
+        const adminData = await Admin.find({ username:username,password:password });
+        if(_.isEmpty(adminData)) {
+            throw new CustomError.BadRequestError("Please enter vaild username and password");
+        }
+        const saltRounds = 10;
+        const plainPassword = adminData.name+'::'+adminData.id+'::'+adminData.password;
+        const hashedToken = await bcrypt.hash(plainPassword, saltRounds);
+
+        blockResult = {
+            'success':1,
+            'token':hashedToken,
+            'message':"Data",
+            'data': adminData
+        } 
+        
+    } catch (err) {
+        blockResult.success = 0;
+        blockResult.message = err.message;
+        blockResult.data = [];
+    }
+
+    outputResponse = res.json(blockResult);
+    return outputResponse;
+}
 
 module.exports = {
     addAdmin,
     fetchAdmin,
     fetchOneAdmin,
     updateAdmin,
-    deleteAdmin
+    deleteAdmin,
+    AdminLogin
 };

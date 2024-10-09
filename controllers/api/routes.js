@@ -63,7 +63,8 @@ const {
     fetchAdmin,
     fetchOneAdmin,
     updateAdmin,
-    deleteAdmin
+    deleteAdmin,
+    AdminLogin
 } = require("./AdminController");
 
 const { 
@@ -149,6 +150,9 @@ router.get("/getusers",fetchUser);
 router.get("/user",fetchOneUser);
 router.post("/updateuser",updateUser);
 router.post('/deleteuser',deleteUser);
+
+// API
+router.post('/adminlogin',AdminLogin);
 
 router.use('*', (req, res) =>
     res.status(httpStatus.NOT_IMPLEMENTED).json({
