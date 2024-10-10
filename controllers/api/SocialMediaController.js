@@ -10,7 +10,7 @@ const fetchMedia = async (req, res) => {
     let outputResponse = {};
 
     try {
-        const mediaData = await SocialMedia.find();
+        const mediaData = await SocialMedia.findOne().sort({ id: -1 });
         
         blockResult = {
             'success':1,

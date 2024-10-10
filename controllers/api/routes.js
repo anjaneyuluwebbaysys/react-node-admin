@@ -17,10 +17,11 @@ const uploadStorage = multer({ storage: storage });
 
 
 router.post("/upload/profile", uploadStorage.single("file"), async (req, res) => {
-    const {user_id} = req.body;
-    let filename = req.file.filename;
+    // const {user_id} = req.body;
+    let filename = req.file.path;
     return res.json({
         'success':1,
+        'filename':filename,
         'message':"Update profile image.",
         'data': []
     });
@@ -56,7 +57,6 @@ router.post("/upload/user_kyc", uploadStorage.fields([
         'data': []
     });
 });
-
 
 const { 
     addAdmin,
